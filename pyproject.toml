@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strand-selector"
+version = "0.1.0"
+description = "Manual Strand-seq cell selection tool"
+authors = [
+    {name = "Patrick Weidner"}
+]
+requires-python = ">=3.9"
+
+dependencies = [
+    "PySide6",
+    "PyMuPDF",
+    "pandas"
+]
+
+[project.scripts]
+strand-selector = "strand_selector.main:main"
