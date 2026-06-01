@@ -62,6 +62,13 @@ You should see the usage message.
 
 ## Usage
 
+Before each use, verify the virtual environment is sourced:
+
+```bash
+cd path/to/strand-selector
+source .venv/bin/activate
+````
+
 Launch Strand Selector on a MosaiCatcher count plot PDF:
 
 ```bash
