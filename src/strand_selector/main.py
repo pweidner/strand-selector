@@ -18,6 +18,14 @@ def main():
 
     pdf_path = sys.argv[1]
 
+    print(
+        f"Loading PDF: {pdf_path}"
+    )
+
+    print(
+        "Scanning pages and extracting metadata..."
+    )
+
     pdf_loader = PDFLoader(pdf_path)
     
     from strand_selector.utils.paths import (

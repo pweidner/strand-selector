@@ -64,28 +64,37 @@ class PDFLoader:
         return None
 
     def extract_reads(self, text):
-
+    
         match = re.search(
             r"Total number of reads:\s*([\d,]+)",
             text
         )
-
+    
         if match:
-            return match.group(1)
-
-        return "NA"
+    
+            return int(
+                match.group(1)
+                .replace(",", "")
+            )
+    
+        return None
 
     def extract_duplicate_rate(self, text):
 
         match = re.search(
-            r"Duplicate rate:\s*([\d.]+%)",
+            r"Duplicate rate:\s*([\d.]+)%",
             text
         )
 
         if match:
-            return match.group(1)
 
-        return "NA"
+            percentage = float(
+                match.group(1)
+            )
+
+            return percentage / 100.0
+
+        return None
 
     def get_cell_info(self, cell_idx):
 

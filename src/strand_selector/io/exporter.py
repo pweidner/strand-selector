@@ -5,39 +5,48 @@ import pandas as pd
 
 def export_annotations(
     session,
+    pdf_loader,
     output_dir,
 ):
 
     rows = []
 
-    for cell_id, label in session.annotations.items():
+    for idx in range(
+        len(pdf_loader.cell_pages)
+    ):
+
+        info = pdf_loader.get_cell_info(idx)
+
+        cell_id = info["cell_id"]
 
         rows.append(
             {
                 "cell_id": cell_id,
-                "label": label,
+                "label": session.annotations.get(
+                    cell_id,
+                    ""
+                ),
+                "reads": info["reads"],
+                "duplicate_rate": info[
+                    "duplicate_rate"
+                ],
             }
         )
 
-    output_file = (
-        output_dir
-        / "annotations.csv"
-    )
-
     pd.DataFrame(rows).to_csv(
-        output_file,
+        output_dir / "annotations.csv",
         index=False,
     )
-
 
 def export_selected(
     session,
     output_dir,
+    sample_name,
 ):
 
     output_file = (
         output_dir
-        / "selected_cells.txt"
+        / f"{sample_name}.txt"
     )
 
     with open(output_file, "w") as handle:

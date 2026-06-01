@@ -14,7 +14,6 @@ from strand_selector.io.exporter import (
 
 from strand_selector.gui.pdf_viewer import PDFViewer
 
-
 class MainWindow(QMainWindow):
 
     def __init__(
@@ -57,6 +56,14 @@ class MainWindow(QMainWindow):
 
         self.update_display()
 
+    def get_selected_count(self):
+
+        return sum(
+            1
+            for label in self.session.annotations.values()
+            if label == "selected"
+        )
+
     def update_display(self):
 
         idx = self.session.current_index
@@ -75,10 +82,13 @@ class MainWindow(QMainWindow):
             pixmap
         )
 
+        selected_count = self.get_selected_count()
+
         self.info_label.setText(
             f"Cell: {cell_info['cell_id']}    "
             f"Reads: {cell_info['reads']}    "
             f"DupRate: {cell_info['duplicate_rate']}    "
+            f"Selected: {selected_count}/{self.session.total_cells}    "
             f"Cell {idx+1}/{self.session.total_cells}"
         )
 
@@ -108,6 +118,11 @@ class MainWindow(QMainWindow):
 
         self.session.current_index += 1
 
+        print(
+            f"DEBUG current_index={self.session.current_index} "
+            f"total_cells={self.session.total_cells}"
+        )
+
         save_session(
             self.session,
             self.session.output_dir
@@ -119,17 +134,39 @@ class MainWindow(QMainWindow):
             >= self.session.total_cells
         ):
 
-            export_annotations(
-                self.session,
-		self.session.output_dir,
-            )
+            print("DEBUG REACHED END")
 
-            export_selected(
-                self.session,
-		self.session.output_dir,
-            )
+            try:
 
-            self.close()
+                print("DEBUG export_annotations")
+
+                export_annotations(
+                    self.session,
+                    self.pdf_loader,
+                    self.session.output_dir,
+                )
+
+                print("DEBUG export_annotations DONE")
+
+                export_selected(
+                    self.session,
+                    self.session.output_dir,
+                    self.pdf_loader.sample_name,
+                )
+
+                print("DEBUG export_selected DONE")
+
+                self.close()
+
+                print("DEBUG close() called")
+
+            except Exception as e:
+
+                print("EXPORT ERROR:", e)
+
+                import traceback
+                traceback.print_exc()
+
             return
 
         self.update_display()
