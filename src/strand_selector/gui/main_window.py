@@ -118,11 +118,6 @@ class MainWindow(QMainWindow):
 
         self.session.current_index += 1
 
-        print(
-            f"DEBUG current_index={self.session.current_index} "
-            f"total_cells={self.session.total_cells}"
-        )
-
         save_session(
             self.session,
             self.session.output_dir
@@ -134,39 +129,20 @@ class MainWindow(QMainWindow):
             >= self.session.total_cells
         ):
 
-            print("DEBUG REACHED END")
+            export_annotations(
+                self.session,
+                self.pdf_loader,
+                self.session.output_dir,
+            )
 
-            try:
+            export_selected(
+                self.session,
+                self.session.output_dir,
+                self.pdf_loader.sample_name,
+            )
 
-                print("DEBUG export_annotations")
-
-                export_annotations(
-                    self.session,
-                    self.pdf_loader,
-                    self.session.output_dir,
-                )
-
-                print("DEBUG export_annotations DONE")
-
-                export_selected(
-                    self.session,
-                    self.session.output_dir,
-                    self.pdf_loader.sample_name,
-                )
-
-                print("DEBUG export_selected DONE")
-
-                self.close()
-
-                print("DEBUG close() called")
-
-            except Exception as e:
-
-                print("EXPORT ERROR:", e)
-
-                import traceback
-                traceback.print_exc()
-
+            self.close()
+            
             return
 
         self.update_display()
