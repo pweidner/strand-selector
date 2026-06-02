@@ -2,7 +2,7 @@
 
 A lightweight desktop application for rapid manual selection of Strand-seq cells from MosaiCatcher count plot PDFs.
 
-![Strand Selector GUI](main_gui.png)
+![Strand Selector GUI](gui.png)
 
 Strand Selector was designed to speed up visual QC of Strand-seq libraries by allowing users to quickly classify cells using only the keyboard while automatically recording annotations and exporting selected cell IDs for downstream cluster workflows.
 
