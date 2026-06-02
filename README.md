@@ -32,7 +32,7 @@ Strand Selector was designed to speed up visual QC of Strand-seq libraries by al
 Clone the repository:
 
 ```bash
-git clone git@github.com:pweidner/strand-selector.git
+git clone https://github.com/pweidner/strand-selector.git
 cd strand-selector
 ```
 
